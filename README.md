@@ -37,3 +37,55 @@ However we could group the data in families that would make sense, for example l
 * **Ingredient_Info** - Grains, Whole_Grain, Vegetables, Orange_Vegetables, Drkgreen_Vegetables, Starchy_vegetables,
                         Other_Vegetables, Fruits, Milk, Meats, Soy, Drybeans_Peas, Oils
 * **Macronutrions_Info** - Solid_Fats, Added_Sugar, Alcohol, Calories, Saturated_Fats
+
+## Querying to HBase
+To retrieve data/get data from HBASE Shell, you can use the command **'get'**.
+The get command has 2 arguments, the first being column family, and the second is the key of the item.
+
+For example, if we choose to get the info of the first item; *Sour Cream dip* with the food_code (the key); 12350000
+the input would look like this:
+```
+get 'foods', '12350000'
+```
+to which the output will be:
+```
+COLUMN                                  CELL
+ facts:Added_Sugars                     timestamp=1649767080819, value=1.57001
+ facts:Alcohol                          timestamp=1649767080819, value=0.0
+ facts:Calories                         timestamp=1649767080819, value=133.65
+ facts:Display_Name                     timestamp=1649767080819, value=Sour cream dip
+ facts:Drkgreen_Vegetables              timestamp=1649767080819, value=0.0
+ facts:Drybeans_Peas                    timestamp=1649767080819, value=0.0
+ facts:Factor                           timestamp=1649767080819, value=0.25
+ facts:Fruits                           timestamp=1649767080819, value=0.0
+ facts:Grains                           timestamp=1649767080819, value=0.04799
+ facts:Increment                        timestamp=1649767080819, value=0.25
+ facts:Meats                            timestamp=1649767080819, value=0.0
+ facts:Milk                             timestamp=1649767080819, value=0.0
+ facts:Multiplier                       timestamp=1649767080819, value=1.0
+ facts:Oils                             timestamp=1649767080819, value=0.0
+ facts:Orange_Vegetables                timestamp=1649767080819, value=0.0
+ facts:Other_Vegetables                 timestamp=1649767080819, value=0.0407
+ facts:Portion_Amount                   timestamp=1649767080819, value=0.25
+ facts:Portion_Default                  timestamp=1649767080819, value=1
+ facts:Portion_Display_Name             timestamp=1649767080819, value=cup
+ facts:Saturated_Fats                   timestamp=1649767080819, value=7.36898
+ facts:Solid_Fats                       timestamp=1649767080819, value=105.6485
+ facts:Soy                              timestamp=1649767080819, value=0.0
+ facts:Starchy_vegetables               timestamp=1649767080819, value=0.0
+ facts:Vegetables                       timestamp=1649767080819, value=0.0407
+ facts:Whole_Grains                     timestamp=1649767080819, value=0.0
+1 row(s)
+```
+
+We can then chose to retrieve a specific column, to which we can add another argument:
+```
+get 'foods', '12350000', {COLUMN => ['facts:Calories']}
+```
+This specifies that we would only like to retrieve the Calorie value of the item.
+The output is as follows:
+```
+COLUMN                                  CELL
+ facts:Calories                         timestamp=1649767080819, value=133.65
+1 row(s)
+```
