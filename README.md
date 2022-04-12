@@ -39,6 +39,7 @@ However we could group the data in families that would make sense, for example l
 * **Macronutrions_Info** - Solid_Fats, Added_Sugar, Alcohol, Calories, Saturated_Fats
 
 ## Querying to HBase
+### Get command
 To retrieve data/get data from HBASE Shell, you can use the command **'get'**.
 The get command has 2 arguments, the first being column family, and the second is the key of the item.
 
@@ -88,4 +89,20 @@ The output is as follows:
 COLUMN                                  CELL
  facts:Calories                         timestamp=1649767080819, value=133.65
 1 row(s)
+```
+
+### Scan command
+The **'scan'*** command Scans and returns all of the table data.
+If we simply use scan on a column family, it will return all of the data, which would look like this.
+```
+scan 'foods', '12350000'
+...
+ 94210100                               column=facts:Whole_Grains, timestamp=1649767082830, value=0.0
+1013 row(s)
+Took 10.4124 seconds
+```
+This is of course not all of the data, as the query took 10,4 seconds to fulfill.
+However, we can filter with scans and put limits on it:
+```
+scan 'foods', '12350000', { FILTER => “FirstKeyOnlyFilter()”}
 ```
